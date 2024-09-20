@@ -144,3 +144,5 @@ def antwort(frage, speak_type):
     global answer
     answer = response.choices[0].message.content
     return answer
+
+# change
