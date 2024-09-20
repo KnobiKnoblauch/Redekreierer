@@ -24,11 +24,11 @@ def setup():
 
 def input_loop():
     speak_type["topic"] = get_topic()
-    if speak_type["topic"] != "" && speak_type["topic"]:
+    if speak_type["topic"] != "" and speak_type["topic"] != None:
         speak_type["goal"] = get_goal()
-        if speak_type["goal"] != "":
+        if speak_type["goal"] != "" and speak_type["goal"] != None:
             speak_type["addresant"] = get_addresant()
-            if speak_type["addresant"] != "":
+            if speak_type["addresant"] != "" and speak_type["goal"] != None:
                 speak_type["speaker"] = get_speaker()
                 #if speak_type["speaker"] != "":
                     # alle inputs
