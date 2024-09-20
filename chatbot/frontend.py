@@ -24,9 +24,16 @@ def setup():
 
 def input_loop():
     speak_type["topic"] = get_topic()
-    speak_type["goal"] = get_goal()
-    speak_type["addresant"] = get_addresant()
-    speak_type["speaker"] = get_speaker()
+    if speak_type["topic"] != "" && speak_type["topic"]:
+        speak_type["goal"] = get_goal()
+        if speak_type["goal"] != "":
+            speak_type["addresant"] = get_addresant()
+            if speak_type["addresant"] != "":
+                speak_type["speaker"] = get_speaker()
+                #if speak_type["speaker"] != "":
+                    # alle inputs
+    
+    
 
 def get_topic():
     prompt = st.chat_input("What is your speech about?")
