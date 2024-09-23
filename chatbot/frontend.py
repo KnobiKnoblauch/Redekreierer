@@ -1,4 +1,6 @@
 import streamlit as st
+import time
+
 user_input = {}
 speak_type_placeholders = {
     "topic": "What is your speech about?",
@@ -26,8 +28,8 @@ def setup():
 def input_loop():
     if 'worked' not in st.session_state:
         st.session_state.worked = False
-    else:
-        print("tedt")
+    if 'submitted' not in st.session_state:
+        st.session_state.submitted = False
     
     if st.session_state.worked == False:
         keys = list(st.session_state.speak_type.keys())
@@ -35,7 +37,7 @@ def input_loop():
         placeholder = speak_type_placeholders[current_key]
         #print(st.session_state.current_step)
         if st.session_state.current_step < len(keys):
-            user_input = st.chat_input(placeholder)
+            user_input = st.chat_input(placeholder, on_submit = submit)
             print(f"user input: {user_input}")
             if user_input is not None:
                 st.session_state.speak_type[current_key] = user_input
@@ -47,16 +49,30 @@ def input_loop():
             
         print(f"CurrentStep: {st.session_state.current_step}")
 
-        if st.session_state.current_step >= len(st.session_state.speak_type):
-            st.write("### Here's the speech information you provided:")
-            st.write(st.session_state.speak_type)
+        #if st.session_state.current_step >= len(st.session_state.speak_type):
+            
     else:
         st.session_state.worked = False
+        input_loop()
     print(st.session_state.worked)
+    #if st.session_state.speak_type["topic"] == "" or st.session_state.speak_type["goal"] == "" or st.session_state.speak_type["addresant"] == "" or st.session_state.speak_type["speaker"] == "" and :
+        #input_loop()
+    if st.session_state.submitted == True:
+        st.session_state.submitted = False
+        input_loop()
+    st.write("### Here's the speech information you provided:")
+    st.write(st.session_state.speak_type)
+
+
+def submit():
+    st.session_state.submitted = True
+    
+
+    
 
 
 '''
-if st.button('Submit'):
+if st.button('Submit'):i
   if user_input:
       st.write(f"Chatbot:{user_input}")
       '''
