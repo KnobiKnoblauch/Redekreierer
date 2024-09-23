@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 
 # Use session state to store the speak_type dictionary
 if 'speak_type' not in st.session_state:
@@ -38,6 +39,11 @@ def display_speech_info():
         st.write(f"- **Audience**: {st.session_state.speak_type['addresant']}")
         st.write(f"- **Speaker**: {st.session_state.speak_type['speaker']}")
     st.success("Your speech has been submitted!")
+    with st.spinner("Generating Speech..."):
+        time.sleep(5)
+    st.succes("Speech Generated")
+    time.sleep(2)
+    st.markdown("Rede")
 
 
 # Main setup function to run the app
