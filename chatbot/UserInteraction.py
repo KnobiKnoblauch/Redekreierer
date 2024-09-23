@@ -1,5 +1,6 @@
 from DatabaseConnector import DatabaseConnector
 from DatabaseService import DatabaseService
+import frontend
 
 db_connector = DatabaseConnector()
 
@@ -12,13 +13,11 @@ def inputSpeakType():
     """
 
     speak_type = {
-        "topic": input("Was ist das Thema deiner Rede: "),
-        "goal": input("Was ist das Ziel deiner Rede: "),
-        "address": input("An wen ist deine Rede gerichtet: "),
-        "speaker": input("Wer hält deine Rede: ")
+        "topic": frontend.st.session_state.speak_type['topic'],
+        "goal": frontend.st.session_state.speak_type['goal'],
+        "address": frontend.st.session_state.speak_type['addresant'],
+        "speaker": frontend.st.session_state.speak_type['speaker']
     }
-
-
 
     prompt = DatabaseService(db_connector)
     prompt.create_table("prompt","(id INTEGER PRIMARY KEY AUTOINCREMENT, topics TEXT, addresses TEXT, goals TEXT, speakers TEXT)")

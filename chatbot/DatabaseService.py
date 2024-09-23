@@ -1,3 +1,6 @@
+from DatabaseConnector import DatabaseConnector
+
+
 class DatabaseService:
     def __init__(self, database):
         self.cursor = database.getCursor()
@@ -67,3 +70,22 @@ class DatabaseService:
             print("Die Tabelle ist leer.")
             return None
 
+    def select_speech_type_params(self, table_name):
+        query = f"SELECT topics, addresses, goals, speakers FROM {table_name}"
+        self.cursor.execute(query)
+        print("Error regarding query execution!")
+
+        rows = self.cursor.fetchall()
+
+        if rows:
+            last_row = rows[-1]
+            return {
+                "topic": last_row[0],
+                "adresse": last_row[1],
+                "goal": last_row[2],
+                "speaker": last_row[3]
+            }
+
+        else:
+            print("Die Tabelle ist leer.")
+            return None
