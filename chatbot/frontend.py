@@ -1,6 +1,5 @@
 import streamlit as st
 user_input = {}
-worked = False
 speak_type_placeholders = {
     "topic": "What is your speech about?",
     "goal": "What is the goal of your speech?",
@@ -25,8 +24,12 @@ def setup():
     st.write("---") 
 
 def input_loop():
-    global worked 
-    if not worked:
+    if 'worked' not in st.session_state:
+        st.session_state.worked = False
+    else:
+        print("tedt")
+    
+    if st.session_state.worked == False:
         keys = list(st.session_state.speak_type.keys())
         current_key = keys[st.session_state.current_step - 1]
         placeholder = speak_type_placeholders[current_key]
@@ -37,8 +40,9 @@ def input_loop():
             if user_input is not None:
                 st.session_state.speak_type[current_key] = user_input
                 st.session_state.current_step += 1
-                worked = True
-
+                st.session_state.worked = True
+            else:
+                st.session_state.worked = False
             #print(st.session_state.current_step)
             
         print(f"CurrentStep: {st.session_state.current_step}")
@@ -46,6 +50,10 @@ def input_loop():
         if st.session_state.current_step >= len(st.session_state.speak_type):
             st.write("### Here's the speech information you provided:")
             st.write(st.session_state.speak_type)
+    else:
+        st.session_state.worked = False
+    print(st.session_state.worked)
+
 
 '''
 if st.button('Submit'):
@@ -55,4 +63,4 @@ if st.button('Submit'):
 
 setup()
 input_loop()
-#print("finished")
+print("finished")
