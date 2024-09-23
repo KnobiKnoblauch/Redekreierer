@@ -1,61 +1,48 @@
 import streamlit as st
-import time
-#import chatgpt_benutzen
 
-
-
-# funktioniert noch nicht
-
-
-
-speak_type = {
-    "topic" : "",
-    "goal" : "",
-    "addresant" : "",
-    "speaker" : ""
-
+speak_type_placeholders = {
+    "topic": "What is your speech about?",
+    "goal": "What is the goal of your speech?",
+    "addresant": "Who is your addressee?",
+    "speaker": "Who is delivering the speech?"
 }
 
+if 'speak_type' not in st.session_state:
+    st.session_state.speak_type = {
+        "topic": "",
+        "goal": "",
+        "addresant": "",
+        "speaker": ""
+    }
+
+if 'current_step' not in st.session_state:
+    st.session_state.current_step = 0
 
 def setup():
-    st.title("_Der Redekreirer_ :blue[von Knobi]")
-    st.subheader("Lalalalaalalala", divider="gray")
-    input_loop()
+    st.title("_Der Redekreierer_ :blue[von Knobi]")
+    st.subheader("Lalalalaalalala")
+    st.write("---") 
 
 def input_loop():
-    speak_type["topic"] = get_topic()
-    if speak_type["topic"] != "" and speak_type["topic"] != None:
-        speak_type["goal"] = get_goal()
-        if speak_type["goal"] != "" and speak_type["goal"] != None:
-            speak_type["addresant"] = get_addresant()
-            if speak_type["addresant"] != "" and speak_type["goal"] != None:
-                speak_type["speaker"] = get_speaker()
-                #if speak_type["speaker"] != "":
-                    # alle inputs
-    
-    
+    keys = list(st.session_state.speak_type.keys())
+    current_key = keys[st.session_state.current_step]
+    placeholder = speak_type_placeholders[current_key]
+    print(st.session_state.current_step)
+    if st.session_state.current_step < len(keys):
+        user_input = st.chat_input(placeholder)
+        print(user_input)
 
-def get_topic():
-    prompt = st.chat_input("What is your speech about?")
-    if prompt:
-         return prompt
+        #if user_input is not None:
+        # user_input ist None
+        st.session_state.speak_type[current_key] = user_input
+        st.session_state.current_step += 1
+        print(st.session_state.current_step)
+            
 
-def get_goal():
-    prompt = st.chat_input("What are you trying to achieve with your speech?")
-    if prompt:
-         return prompt
-
-def get_addresant():
-    prompt = st.chat_input("Who listens to your speech?")
-    if prompt:
-         return prompt
-
-def get_speaker():
-    prompt = st.chat_input("Who is performing your speech?")
-    if prompt:
-         return prompt
+    if st.session_state.current_step >= len(st.session_state.speak_type):
+        st.write("### Here's the speech information you provided:")
+        st.write(st.session_state.speak_type)
 
 setup()
-
-
-st.button("Rerun")
+input_loop()
+print("finished")
