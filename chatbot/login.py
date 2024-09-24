@@ -28,12 +28,10 @@ def clicked():
         i += 1
     if correct:
         print("Login succesfull")
-        st.session_state.c.container(height=50, border=True)
         st.session_state.c.text("Login succesfull")
         connection.close()
     else:
         print("Incorrect Username or Password")
-        st.session_state.c.container(height=50, border=True)
         st.session_state.c.text("Incorrect Username or Password")
         connection.close()
 
@@ -41,6 +39,8 @@ def setup():
     st.session_state.username = st.text_input("Username")
     st.session_state.password = st.text_input("Password", type = "password")
     st.button("continue", type="secondary", on_click = clicked)
+    st.session_state.c = st.container(height=50, border=False)
+    
 
 def get_login_data():
     rows = cursor.execute("SELECT username, password FROM Users").fetchall()
