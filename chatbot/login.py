@@ -4,7 +4,7 @@ import streamlit as st
 # Set up the Streamlit page
 if "page" not in st.session_state:
     st.session_state.page = "Home"
-st.set_page_config(page_title="Login", layout="centered")
+st.set_page_config(page_title="Login", layout="centered", initial_sidebar_state="collapsed")
 st.markdown('<h1 class="title">Login</h1>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Please enter your credentials to continue.</div>', unsafe_allow_html=True)
 st.write("---")
@@ -96,17 +96,15 @@ def clicked():
         connection.close()
 
 def setup():
+    st.session_state.c = st.container(height=20, border=False)
     st.session_state.username = st.text_input("Username", placeholder="Enter your username")
     st.session_state.password = st.text_input("Password", type="password", placeholder="Enter your password")
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        st.button("Continue", on_click=clicked)
-    with col3:
-        # st.markdown('<div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-left: -50spx;">', unsafe_allow_html=True)
-        st.page_link("pages/Sign_Up.py", label="Don't have an Account?")
-        # st.markdown('</div>', unsafe_allow_html=True)
-        pass
-    st.session_state.c = st.container(height=100, border=False)
+    col1, col2, col3 = st.columns([1, 1, 1])
+    col2.html("<div style='text-align:center'><a href=/Sign_Up style='color:blue'>Don't have an Account?</a></div>")
+    
+
+      
+    st.button("Continue", on_click=clicked, use_container_width=True)    
 
 def get_login_data():
     rows = cursor.execute("SELECT username, password FROM Users").fetchall()
@@ -114,9 +112,9 @@ def get_login_data():
 
 def newPage():
     if st.session_state.page == "Bot":
-        st.switch_page("pages/Bot.py")
+        st.switch_page("Bot.py")
     if st.session_state.page == "SignUp":
-        st.switch_page("pages/Sign_Up.py")
+        st.switch_page("Sign_Up.py")
 
 def GoToSignUp():
     print("lul")
