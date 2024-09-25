@@ -7,6 +7,7 @@ from DatabaseService import DatabaseService
 db = DatabaseConnector()
 database_service = DatabaseService(db)
 
+
 def setup_show_speech(id):
 
     speech = database_service.select_table_name("saved_speeches", "name", id)
@@ -29,6 +30,6 @@ def show_speech(id):
     with st.spinner("loading Speech"):
         time.sleep(2)
 
-    st.success("Speech loaded")
+    st.markdown('<div class="stSuccess">Speech loaded</div>', unsafe_allow_html=True)
 
     st.write(speech)

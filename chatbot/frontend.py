@@ -10,19 +10,107 @@ db = DatabaseConnector()
 database_service = DatabaseService(db)
 
 
-st.markdown(
-    """
+
+st.markdown("""
     <style>
-    .custom-divider {
+        .title {
+            font-size: 36px;
+            color: #4F8BF9;
+            font-weight: bold;
+            text-align: center;
+        }
+        .subtitle {
+            font-size: 18px;
+            color: #555;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 15px;
+            color: #555;
+            text-align: center;
+            margin-bottom: 0px;    
+        }
+        .footer {
+            text-align: center;
+            font-size: 15px;
+            color: #555;
+            margin-top: 50px;
+        }
+      .stButton > button, .stForm div > button {
+            background-color: #4F8BF9;  /* Deine Hintergrundfarbe */
+            color: white;  /* Textfarbe */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .stButton > button:hover, .stForm div > button:hover {
+            background-color: #3a7cd3;  
+            color: white;
+            outline: none;
+        }
+
+        .stButton > button:focus, .stForm div > button:focus {
+            outline: none !important;
+            box-shadow: none !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        .stButton > button:active, .stForm div > button:active {
+            background-color: #4F8BF9 !important;
+            color: white !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+         .stSuccess {
+            background-color: #4F8BF9; /* Deine gewünschte Hintergrundfarbe */
+            color: white; /* Textfarbe */
+            border-radius: 5px; /* Abgerundete Ecken */
+            padding: 10px; /* Innenabstand */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optionaler Schatten */
+            border: 2px solid white;
+        }
+        
+        .custom-divider {
         border: 0;
         height: 2px; /* Höhe der Linie */
         background-color: #0099FF; /* Ändere die Farbe hier */
         margin: 20px 0; /* Abstand oben und unten */
+        
     }
+    
+       /* Hintergrundfarbe und Schriftfarbe des Expanders beim Hover */
+        .stExpander {
+            border-radius: 5px; /* Abgerundete Ecken */
+            overflow: hidden; /* Sicherstellen, dass der Inhalt nicht überläuft */
+        }
+
+        .stExpander:hover {
+            background-color: #3e74d8;  /* Hintergrundfarbe beim Hover */
+            color: white !important;  /* Schriftfarbe beim Hover */
+            border-radius: 5px; /* Beibehalten der abgerundeten Ecken */
+        }
+
+        /* Standardtextfarbe des Expanders */
+        .stExpander {
+            color: black; /* Standardtextfarbe */
+        }
+
+        /* Hoverfarbe für die Titel der Expanders */
+        .stExpander:hover h2, 
+        .stExpander:hover .stExpanderHeader {
+            color: white !important; /* Titel Schriftfarbe beim Hover */
+        }
+        
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
+
 
 if 'show_speech' not in st.session_state:
     st.session_state.show_speech = False
@@ -91,7 +179,7 @@ def setup():
 
 
                 for speech in saved_speeches:
-                    with st.popover(speech):
+                    with st.expander(speech):
                         id = database_service.select_table_id("saved_speeches", "id", speech)
 
                         st.button("Delete Speech", on_click=delete_speech, key=f"delete_{id}", args=id)
@@ -104,15 +192,13 @@ def setup():
 def speech_saved(speech):
     with st.spinner("Saving Speech"):
         database_service.create_table("saved_speeches", "(id INTEGER PRIMARY KEY AUTOINCREMENT, speech, name)")
-        st.success("Tabelle erstellt")
         database_service.insert_speech(speech, chatgpt_benutzen.speech_name(speech))
         time.sleep(5)
-    st.success("Speech saved")
+    st.markdown('<div class="stSuccess">Speech saved</div>', unsafe_allow_html=True)
 
 
 def display_speech_info():
-
-    st.success("Your speech has been submitted!")
+    st.markdown('<div class="stSuccess">Your Speech has been submitted</div>', unsafe_allow_html=True)
 
     min_score = st.session_state.speak_type['points']
 
@@ -120,7 +206,7 @@ def display_speech_info():
         speak_type = input_speak_type(database_service)
         st.session_state.output = chatgpt_benutzen.gptbenutzen_infos(speak_type, min_score, database_service)
     output = st.session_state.output
-    st.success("speech generated")
+    st.markdown('<div class="stSuccess">speech generated</div>', unsafe_allow_html=True)
     time.sleep(2)
     speech_output(output)
 
@@ -146,7 +232,7 @@ def delete_speech(id):
     with st.spinner("deleting Speech"):
         time.sleep(2)
 
-    st.success("Speech deleted")
+    st.markdown('<div class="stSuccess">Speech deleted</div>', unsafe_allow_html=True)
 
 
 def show_speech(id):
