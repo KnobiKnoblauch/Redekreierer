@@ -1,8 +1,10 @@
 import sqlite3
 import streamlit as st
 
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
 # Set up the Streamlit page
-st.set_page_config(page_title="Sign Up", page_icon="🔐", layout="centered")
+st.set_page_config(page_title="Sign Up", layout="centered", initial_sidebar_state="collapsed")
 st.markdown('<h1 class="title">Sign Up</h1>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Create an Account to continue.</div>', unsafe_allow_html=True)
 st.write("---")
@@ -55,7 +57,6 @@ st.markdown("""
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
-            margin-top: 30px;
         }
         .stButton > button:hover {
             background-color: #3a7cd3;
@@ -88,6 +89,10 @@ def clicked():
         print("Username is already taken")
         st.session_state.c.markdown('<div class="message">Username is already taken</div>', unsafe_allow_html=True)
         connection.close()
+    elif username == "" or password == "" or password_confirmed == "":
+        print("It looks like some fields are empty")
+        st.session_state.c.markdown('<div class="message">It looks like some fields are empty</div>', unsafe_allow_html=True)
+        connection.close()
     elif len(password) < 5:
         print("Password must have at least 5 tokens")
         st.session_state.c.markdown('<div class="message">Password must have at least 5 tokens</div>', unsafe_allow_html=True)
@@ -97,17 +102,22 @@ def clicked():
         print("Account created")
         st.session_state.c.markdown('<div class="message">Account created</div>', unsafe_allow_html=True)
         connection.close()
-    else:
+        st.session_state.page = "Bot"
+    elif password != password_confirmed:
         print("Passwords doesnt match")
         st.session_state.c.markdown('<div class="message">Passwords doesnt match</div>', unsafe_allow_html=True)
         connection.close()
 
+    
+
 def setup():
+    st.session_state.c = st.container(height=20, border=False)
     st.session_state.username = st.text_input("Username", placeholder="Enter your username")
     st.session_state.password = st.text_input("Password", type="password", placeholder="Enter your password")
     st.session_state.password_confirmed = st.text_input("Confirm password", type="password", placeholder="Confirm your password")
-    st.button("Continue", on_click=clicked)
-    st.session_state.c = st.container(height=100, border=False)
+    col1, col2, col3 = st.columns([1, 1, 1])
+    col2.html("<div style='text-align:center'><a href=/Login style='color:blue'>Already have an Account?</a></div>")
+    st.button("Continue", on_click=clicked, use_container_width=True)    
 
 def CreateAccount(username, password):
     cursor.execute("INSERT INTO Users (username, password) VALUES (?, ?)", (username, password))
