@@ -6,7 +6,7 @@ class DatabaseConnector:
     __c = None
 
     def __init__(self):
-        self.__db = sqlite3.connect('chatbot.sqlite')
+        self.__db = sqlite3.connect('chatbot.sqlite', check_same_thread=False)
         self.__c = self.__db.cursor()
 
     def close(self):

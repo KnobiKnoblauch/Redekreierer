@@ -1,6 +1,3 @@
-import json
-
-
 class PromptCreationService:
 
     def __int__(self):
@@ -8,7 +5,7 @@ class PromptCreationService:
 
     def create_speech_prompt(self, prompt_param, eval_param, answer):
         """
-            Kreiiert die Speech Type Parameter
+            Kreiert die Speech Type Parameter
 
             :param prompt_param:
             :param eval_param:

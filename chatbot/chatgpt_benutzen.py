@@ -1,8 +1,5 @@
 from openai import OpenAI
 
-from DatabaseConnector import DatabaseConnector
-from DatabaseService import DatabaseService
-import prompt_creator
 from prompt_creator import PromptCreationService
 
 client = OpenAI(
@@ -23,25 +20,28 @@ def punktzahl_quality(database_service):
     response = client.chat.completions.create(**request)
     chat_gpt_response = response.choices[0].message.content
 
-    print(chat_gpt_response)
+    print("Qualität: " + chat_gpt_response)
 
     return chat_gpt_response
+
 
 def punktzahl_content(database_service):
     speech_type_params = database_service.select_speech_type_params("prompt")
     request = prompt_creation_service.create_openai_request(speech_type_params, "des Inhalts", answer)
     response = client.chat.completions.create(**request)
     chat_gpt_response = response.choices[0].message.content
-    print(chat_gpt_response)
+    print("Inhalt: " + chat_gpt_response)
     return chat_gpt_response
+
 
 def punktzahl_laenge(database_service):
     speech_type_params = database_service.select_speech_type_params("prompt")
     request = prompt_creation_service.create_openai_request(speech_type_params, "der Länge", answer)
     response = client.chat.completions.create(**request)
     chat_gpt_response = response.choices[0].message.content
-    print(chat_gpt_response)
+    print("Länge: " + chat_gpt_response)
     return chat_gpt_response
+
 
 def gptbenutzen_infos(speak_type, score, database_service):
     min_score = int(score)
@@ -111,4 +111,13 @@ def antwort(frage, speak_type):
     answer = response.choices[0].message.content
     return answer
 
-# change
+
+def speech_name(speech):
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "du bist ein Mensch"},
+            {"role": "user", "content": "Gib dieser Rede einen Namen: " + speech}
+        ]
+    )
+    return response.choices[0].message.content

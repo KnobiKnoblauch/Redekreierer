@@ -1,4 +1,3 @@
-from DatabaseConnector import DatabaseConnector
 
 
 class DatabaseService:
@@ -52,10 +51,46 @@ class DatabaseService:
         self.db.saveChanges()
         print("verbesserte Punkteverteilung erstellt")
 
-    def select_table(self, table_name):
-        # get last row of table
-        self.cursor.execute(f"SELECT * FROM {table_name} WHERE id=?", [id])
-        return self.cursor.fetchone()
+    def insert_speech(self, speech, name):
+        print("Speichere speech")
+        self.cursor.execute("INSERT INTO saved_speeches (speech, name) VALUES (?, ?)",
+                            [
+                                speech, name
+                            ])
+        self.db.saveChanges()
+        print("speech gespeichert")
+
+    def select_table(self, table_name, column_name):
+
+        self.cursor.execute(f"SELECT {column_name} FROM {table_name}")
+
+        rows = self.cursor.fetchall()
+
+        return [row[0] for row in rows]
+
+    def select_table_spalte(self, table_name, column_name, id):
+        self.cursor.execute(f"SELECT {column_name} FROM {table_name} WHERE id=?", (id,))
+        result = self.cursor.fetchone()  # Holt nur eine Zeile
+
+        if result:
+            return result[0]  # Gibt den tatsächlichen Wert ohne Tupel oder Liste zurück
+        else:
+            return None  # Falls kein Ergebnis gefunden wurde
+
+    def select_table_id(self, table_name, column_name, name):
+        self.cursor.execute(f"SELECT {column_name} FROM {table_name} WHERE name=?", [name])
+        result = self.cursor.fetchall()
+
+        return result[0]
+
+    def select_table_name(self, table_name, column_name, id):
+        self.cursor.execute(f"SELECT {column_name} FROM {table_name} WHERE id=?", (id,))
+        result = self.cursor.fetchone()  # Holt nur eine Zeile
+
+        if result:
+            return result[0]
+        else:
+            return None
 
     def select_last_row_but_id(self, table_name, column):
         query = f"SELECT * FROM {table_name}"
@@ -73,7 +108,6 @@ class DatabaseService:
     def select_speech_type_params(self, table_name):
         query = f"SELECT topics, addresses, goals, speakers FROM {table_name}"
         self.cursor.execute(query)
-        print("Error regarding query execution!")
 
         rows = self.cursor.fetchall()
 
@@ -89,3 +123,7 @@ class DatabaseService:
         else:
             print("Die Tabelle ist leer.")
             return None
+
+    def delete_speech(self, id):
+        self.cursor.execute("DELETE FROM saved_speeches WHERE id = ?", (id,))
+        self.db.saveChanges()

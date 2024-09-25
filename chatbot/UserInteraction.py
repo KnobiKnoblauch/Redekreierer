@@ -1,6 +1,6 @@
 from DatabaseConnector import DatabaseConnector
 from DatabaseService import DatabaseService
-import frontend
+from chatbot import frontend
 
 db_connector = DatabaseConnector()
 
