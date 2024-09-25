@@ -2,7 +2,9 @@ import sqlite3
 import streamlit as st
 
 # Set up the Streamlit page
-st.set_page_config(page_title="Login", page_icon="🔐", layout="centered")
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+st.set_page_config(page_title="Login", layout="centered")
 st.markdown('<h1 class="title">Login</h1>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Please enter your credentials to continue.</div>', unsafe_allow_html=True)
 st.write("---")
@@ -12,8 +14,6 @@ st.session_state.c = st.empty()
 connection = sqlite3.connect("LoginData.sqlite", check_same_thread=False)
 cursor = connection.cursor()
 cursor.execute("CREATE TABLE IF NOT EXISTS Users (username TEXT UNIQUE, password TEXT)")
-cursor.execute("INSERT OR IGNORE INTO Users VALUES ('Knobi', '1234')")
-cursor.execute("INSERT OR IGNORE INTO Users VALUES ('Theo', '1234')")
 connection.commit()
 
 # CSS styling for the app
@@ -37,14 +37,6 @@ st.markdown("""
             text-align: center;
             margin-bottom: 0px;    
         }
-        .login-container {
-            background-color: #f0f2f6;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: auto;
-        }
         .footer {
             text-align: center;
             font-size: 15px;
@@ -57,7 +49,7 @@ st.markdown("""
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
-            margin: auto;
+            #margin-top: 50px;
         }
         .stButton > button:hover {
             background-color: #3a7cd3;
@@ -96,6 +88,7 @@ def clicked():
         print("Login successful")
         st.session_state.c.markdown('<div class="message">Login successful.</div>', unsafe_allow_html=True)
         connection.close()
+        st.session_state.page = "Bot"
     else:
         print("Incorrect Username or Password")
         st.session_state.c.markdown('<div class="message">Incorrect username or password</div>', unsafe_allow_html=True)
@@ -105,12 +98,31 @@ def clicked():
 def setup():
     st.session_state.username = st.text_input("Username", placeholder="Enter your username")
     st.session_state.password = st.text_input("Password", type="password", placeholder="Enter your password")
-    st.button("Login", on_click=clicked)
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.button("Continue", on_click=clicked)
+    with col3:
+        # st.markdown('<div style="height: 60px; display: flex; align-items: center; justify-content: center; margin-left: -50spx;">', unsafe_allow_html=True)
+        st.page_link("pages/Sign_Up.py", label="Don't have an Account?")
+        # st.markdown('</div>', unsafe_allow_html=True)
+        pass
     st.session_state.c = st.container(height=100, border=False)
 
 def get_login_data():
     rows = cursor.execute("SELECT username, password FROM Users").fetchall()
     return rows
 
+def newPage():
+    if st.session_state.page == "Bot":
+        st.switch_page("pages/Bot.py")
+    if st.session_state.page == "SignUp":
+        st.switch_page("pages/Sign_Up.py")
+
+def GoToSignUp():
+    print("lul")
+    st.session_state.page == "SignUp"
+
+
 setup()
 st.markdown('<div class="footer">Lasse dir mit einfachen Schritten deine eigene, personalisierte und qualitativ hochwertige Rede kreieren!</div>', unsafe_allow_html=True)
+newPage()
