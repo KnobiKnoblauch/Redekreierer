@@ -1,10 +1,15 @@
+
 from openai import OpenAI
 
 from prompt_creator import PromptCreationService
+from dotenv import load_dotenv
+import os
 
-client = OpenAI(
-    api_key="your own api key"
-)
+load_dotenv()
+
+api_key = os.getenv("API_KEY")
+
+client = OpenAI(api_key=api_key)
 
 
 prompt_creation_service = PromptCreationService()
