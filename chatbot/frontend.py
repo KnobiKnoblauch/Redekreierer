@@ -78,7 +78,7 @@ st.markdown("""
         .custom-divider {
         border: 0;
         height: 2px; /* Höhe der Linie */
-        background-color: #0099FF; /* Ändere die Farbe hier */
+        background-color: #4F8BF9; /* Ändere die Farbe hier */
         margin: 20px 0; /* Abstand oben und unten */
         
         }
@@ -179,8 +179,20 @@ if 'speak_type' not in st.session_state:
 
 def setup():
     if not st.session_state.show_speech:
-        st.title("*Der Redekreierer* **von** :blue[Knobi] **und** :blue[TayozZ]")
-        st.subheader("Lasse dir mit einfachen Schritten deine _eigene_, _personalisierte_ und _qualitativ hochwertige_ :blue[Rede] kreieren!", divider="blue")
+        st.markdown("""
+            <div style="text-align: center;">
+                <h1 style="line-height: 1.2;">
+                    Der Redekreierer <br>
+                    <strong>von</strong> <span style="color: #4F8BF9;">Knobi</span> <strong>und</strong> <span style="color: #4F8BF9;">TayozZ</span>
+                </h1>
+            </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+            <div style="text-align: center;">
+                <h3>Lasse dir mit einfachen Schritten deine <em>eigene</em>, <em>personalisierte</em> und <em>qualitativ hochwertige</em> <span style="color: #4F8BF9;">Rede</span> kreieren!</h3>
+            </div>
+            <hr style="border: 1px solid #4F8BF9;">
+        """, unsafe_allow_html=True)
 
         with st.form("speech_form"):
             st.session_state.speak_type["topic"] = st.text_input("What is your speech about?")
