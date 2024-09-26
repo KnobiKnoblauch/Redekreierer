@@ -1,6 +1,6 @@
 from DatabaseConnector import DatabaseConnector
 from DatabaseService import DatabaseService
-import frontend
+import pages.Bot as Bot
 
 db_connector = DatabaseConnector()
 
@@ -13,10 +13,10 @@ def inputSpeakType():
     """
 
     speak_type = {
-        "topic": frontend.st.session_state.speak_type['topic'],
-        "goal": frontend.st.session_state.speak_type['goal'],
-        "address": frontend.st.session_state.speak_type['addresant'],
-        "speaker": frontend.st.session_state.speak_type['speaker']
+        "topic": Bot.st.session_state.speak_type['topic'],
+        "goal": Bot.st.session_state.speak_type['goal'],
+        "address": Bot.st.session_state.speak_type['addresant'],
+        "speaker": Bot.st.session_state.speak_type['speaker']
     }
 
     prompt = DatabaseService(db_connector)
