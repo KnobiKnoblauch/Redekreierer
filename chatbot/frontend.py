@@ -9,8 +9,6 @@ import show_speech_page
 db = DatabaseConnector()
 database_service = DatabaseService(db)
 
-
-
 st.markdown("""
     <style>
         .title {
@@ -37,7 +35,7 @@ st.markdown("""
             color: #555;
             margin-top: 50px;
         }
-      .stButton > button, .stForm div > button {
+        .stButton > button, .stForm div > button {
             background-color: #4F8BF9;  /* Deine Hintergrundfarbe */
             color: white;  /* Textfarbe */
             border: none;
@@ -83,31 +81,60 @@ st.markdown("""
         background-color: #0099FF; /* Ändere die Farbe hier */
         margin: 20px 0; /* Abstand oben und unten */
         
-    }
+        }
     
-       /* Hintergrundfarbe und Schriftfarbe des Expanders beim Hover */
+        /* Expander Container */
         .stExpander {
-            border-radius: 5px; /* Abgerundete Ecken */
-            overflow: hidden; /* Sicherstellen, dass der Inhalt nicht überläuft */
-        }
-
-        .stExpander:hover {
-            background-color: #3e74d8;  /* Hintergrundfarbe beim Hover */
-            color: white !important;  /* Schriftfarbe beim Hover */
-            border-radius: 5px; /* Beibehalten der abgerundeten Ecken */
-        }
-
-        /* Standardtextfarbe des Expanders */
-        .stExpander {
-            color: black; /* Standardtextfarbe */
-        }
-
-        /* Hoverfarbe für die Titel der Expanders */
-        .stExpander:hover h2, 
-        .stExpander:hover .stExpanderHeader {
-            color: white !important; /* Titel Schriftfarbe beim Hover */
+            border-radius: 5px;
+            overflow: hidden;
         }
         
+        .st-emotion-cache-p5msec.eqpbllx1:hover {
+            color: white !important;
+        }
+        
+        .st-emotion-cache-p5msec.eqpbllx1:hover {
+            color: white !important;
+        }
+        
+        svg:hover {
+            color: white !important;
+        }
+
+        /* Hintergrundfarbe und Textfarbe beim Hover */
+        .stExpander:hover {
+            background-color: #3e74d8;
+            color: white !important;
+        }
+
+        /* Standardfarbe des Expanders */
+        .stExpander h2, .stExpander .stExpanderHeader {
+            color: black !important; /* Standard Schriftfarbe */
+        }
+
+        /* Toggle-Button/ Header des Expanders, wenn man über ihn fährt */
+        .stExpanderHeader:hover {
+            background-color: #3e74d8; /* Gleiche Hintergrundfarbe beim Hover */
+            color: white !important; /* Schriftfarbe wird weiß beim Hover */
+        }
+
+        /* Speziell der Text und Pfeil-Symbol im geöffneten Zustand */
+        .stExpander:focus-within .stExpanderHeader {
+            background-color: #3e74d8; /* Hintergrund bleibt im geöffneten Zustand blau */
+            color: white !important; /* Schrift und Pfeil bleibt weiß */
+        }
+
+        /* Speziell für das Pfeil-Symbol und den Header-Text */
+        .stExpanderHeader:hover div {
+            color: white !important;
+        }
+
+        /* Auch im geöffneten Zustand die Farben beibehalten */
+        .stExpanderHeader:focus-within {
+            background-color: #3e74d8; 
+            color: white !important;
+        }
+   
     </style>
 """, unsafe_allow_html=True)
 
