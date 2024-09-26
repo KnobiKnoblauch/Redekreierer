@@ -6,7 +6,7 @@ from prompt_creator import PromptCreationService
 
 #load_dotenv()
 
-api_key = "sk-UjackFxt9Fq7ya8FF-YEOrEweg812-RCLWunJ--GAsT3BlbkFJwEEmTIZNu01wlgUip5ICwzKlYQ8wmK-Jncq1dNqJEA"
+api_key = ""
 
 client = OpenAI(api_key=api_key)
 
