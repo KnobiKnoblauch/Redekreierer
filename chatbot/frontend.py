@@ -76,10 +76,10 @@ st.markdown("""
         }
         
         .custom-divider {
-        border: 0;
-        height: 2px; /* Höhe der Linie */
-        background-color: #4F8BF9; /* Ändere die Farbe hier */
-        margin: 20px 0; /* Abstand oben und unten */
+            border: 0;
+            height: 2px; /* Höhe der Linie */
+            background-color: #4F8BF9; /* Ändere die Farbe hier */
+            margin: 20px 0; /* Abstand oben und unten */
         
         }
     
@@ -218,11 +218,16 @@ def setup():
 
 
                 for speech in saved_speeches:
-                    with st.expander(speech):
-                        id = database_service.select_table_id("saved_speeches", "id", speech)
 
-                        st.button("Delete Speech", on_click=delete_speech, key=f"delete_{id}", args=id)
-                        st.button("Show Speech", on_click=show_speech, key=f"show_{id}", args=id)
+
+
+                    with st.expander(speech):
+                        col1, col2 = st.columns(2)
+                        id = database_service.select_table_id("saved_speeches", "id", speech)
+                        with col1:
+                            st.button("Delete Speech", on_click=delete_speech, key=f"delete_{id}", args=id)
+                        with col2:
+                            st.button("Show Speech", on_click=show_speech, key=f"show_{id}", args=id)
 
         if submit_button:
             display_speech_info()
