@@ -101,6 +101,7 @@ def clicked():
         print("Account created")
         st.session_state.c.markdown('<div class="message">Account created</div>', unsafe_allow_html=True)
         connection.close()
+        st.session_state.logged_in = True
         return True
     elif password != password_confirmed:
         print("Passwords doesnt match")

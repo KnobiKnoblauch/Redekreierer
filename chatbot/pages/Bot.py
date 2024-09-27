@@ -225,17 +225,16 @@ def setup():
             st.write("### Your Saved Speeches ")
 
             
-
+        if st.session_state.logged_in:
             username = st.session_state.username
             user_id = cursor1.execute("SELECT user_id FROM Users WHERE username = ?", (username,)).fetchone()[0]
-            cursor1.close()
-            saved_speeches = cursor2.execute("SELECT speech FROM saved_speeches WHERE user_id = ?", (user_id,)).fetchall()
-            cursor2.close()
-
+            
+            saved_speeches = cursor2.execute("SELECT name FROM saved_speeches WHERE user_id = ?", (user_id,)).fetchall()
+            
             for speech in saved_speeches:
-                with st.expander(speech):
+                with st.expander(str(speech)):
                     col1, col2 = st.columns(2)
-                    id = database_service.select_table_id("Speeches", "speech_id", speech)
+                    id = database_service.select_table_id("saved_speeches", "id", speech)
                     with col1:
                         st.button("Delete", on_click=delete_speech, key=f"delete_{id}", args=(id,))
                     with col2:
@@ -263,7 +262,7 @@ def setup():
 def speech_saved(speech):
     with st.spinner("Saving Speech"):
         username = st.session_state.username
-        user_id = cursor1.execute("SELECT user_id FROM Users WHERE username = ?", (username,))
+        user_id = cursor1.execute("SELECT user_id FROM Users WHERE username = ?", (username,)).fetchone()[0]
         print(user_id)
         name = chatgpt_benutzen.speech_name(speech)
         print(name + speech)
@@ -286,7 +285,8 @@ def display_speech_info():
     if 'speech_saved' not in st.session_state:
         st.session_state.speech_saved = False
 
-    st.button("Save for later", on_click=uebergang)
+    if st.session_state.logged_in:
+        st.button("Save for later", on_click=uebergang)
 
 
 def uebergang():
