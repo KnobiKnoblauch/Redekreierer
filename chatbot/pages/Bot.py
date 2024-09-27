@@ -229,8 +229,7 @@ def setup():
 
 def speech_saved(speech):
     with st.spinner("Saving Speech"):
-        database_service.create_table("saved_speeches", "(id INTEGER PRIMARY KEY AUTOINCREMENT, speech, name)")
-        database_service.insert_speech(speech, chatgpt_benutzen.speech_name(speech))
+        cursor.execute("INSERT INTO Users (speech) VALUES (?)", (speech))
         time.sleep(5)
     st.markdown('<div class="stSuccess">Speech saved</div>', unsafe_allow_html=True)
 
