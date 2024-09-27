@@ -11,6 +11,8 @@ import show_speech_page
 
 if "username" not in st.session_state:
     st.session_state.username = ""
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
 db = DatabaseConnector()
 database_service = DatabaseService(db)
@@ -220,25 +222,24 @@ def setup():
             st.write(f"- **Audience**: *{st.session_state.speak_type['addresant']}*")
             st.write(f"- **Speaker**: *{st.session_state.speak_type['speaker']}*")
 
-            st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-
-            st.write("### Your Saved Speeches ")
-
+            if st.session_state.logged_in:
+                st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+                st.write("### Your Saved Speeches ")
             
-        if st.session_state.logged_in:
-            username = st.session_state.username
-            user_id = cursor1.execute("SELECT user_id FROM Users WHERE username = ?", (username,)).fetchone()[0]
+            if st.session_state.logged_in:
+                username = st.session_state.username
+                user_id = cursor1.execute("SELECT user_id FROM Users WHERE username = ?", (username,)).fetchone()[0]
             
-            saved_speeches = cursor2.execute("SELECT name FROM saved_speeches WHERE user_id = ?", (user_id,)).fetchall()
+                saved_speeches = cursor2.execute("SELECT name FROM saved_speeches WHERE user_id = ?", (user_id,)).fetchall()
             
-            for speech in saved_speeches:
-                with st.expander(str(speech)):
-                    col1, col2 = st.columns(2)
-                    id = database_service.select_table_id("saved_speeches", "id", speech)
-                    with col1:
-                        st.button("Delete", on_click=delete_speech, key=f"delete_{id}", args=(id,))
-                    with col2:
-                        st.button("Show", on_click=show_speech, key=f"show_{id}", args=(id,))
+                for speech in saved_speeches:
+                    with st.expander(str(speech)):
+                        col1, col2 = st.columns(2)
+                        id = database_service.select_table_id("saved_speeches", "id", speech)
+                        with col1:
+                            st.button("Delete", on_click=delete_speech, key=f"delete_{id}", args=(id,))
+                        with col2:
+                            st.button("Show", on_click=show_speech, key=f"show_{id}", args=(id,))
 
         if submit_button:
             if (st.session_state.speak_type["topic"] == "" or

@@ -1,0 +1,96 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\frontend.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:chatbot\\frontend.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\UserInteraction.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:chatbot\\UserInteraction.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\main.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:chatbot\\main.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\chatgpt_benutzen.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:chatbot\\chatgpt_benutzen.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 295,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{5a4e9529-b6a0-46b5-be4f-0f0b239bc0eb}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserInteraction.py",
+              "DocumentMoniker": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\UserInteraction.py",
+              "RelativeDocumentMoniker": "chatbot\\UserInteraction.py",
+              "ToolTip": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\UserInteraction.py",
+              "RelativeToolTip": "chatbot\\UserInteraction.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-09-20T12:33:59.812Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "main.py",
+              "DocumentMoniker": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\main.py",
+              "RelativeDocumentMoniker": "chatbot\\main.py",
+              "ToolTip": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\main.py",
+              "RelativeToolTip": "chatbot\\main.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-09-20T12:32:33.957Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "chatgpt_benutzen.py",
+              "DocumentMoniker": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\chatgpt_benutzen.py",
+              "RelativeDocumentMoniker": "chatbot\\chatgpt_benutzen.py",
+              "ToolTip": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\chatgpt_benutzen.py",
+              "RelativeToolTip": "chatbot\\chatgpt_benutzen.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-09-20T12:29:58.914Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "frontend.py",
+              "DocumentMoniker": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\frontend.py",
+              "RelativeDocumentMoniker": "chatbot\\frontend.py",
+              "ToolTip": "C:\\Users\\pollack\\source\\repos\\Redekreirer\\chatbot\\frontend.py",
+              "RelativeToolTip": "chatbot\\frontend.py",
+              "ViewState": "AgIAABQAAAAAAAAAAADwv0sAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-09-20T12:28:51.959Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -88,15 +88,19 @@ def clicked():
         print("Username is already taken")
         st.session_state.c.markdown('<div class="message">Username is already taken</div>', unsafe_allow_html=True)
         connection.close()
+        return False
     elif username == "" or password == "" or password_confirmed == "":
         print("It looks like some fields are empty")
         st.session_state.c.markdown('<div class="message">It looks like some fields are empty</div>', unsafe_allow_html=True)
         connection.close()
+        return False
     elif len(password) < 5:
         print("Password must have at least 5 tokens")
         st.session_state.c.markdown('<div class="message">Password must have at least 5 tokens</div>', unsafe_allow_html=True)
         connection.close()
-    elif password == password_confirmed:
+        return False
+    elif password == password_confirmed and len(password) >= 5:
+        print(len(password))
         CreateAccount(username, password)
         print("Account created")
         st.session_state.c.markdown('<div class="message">Account created</div>', unsafe_allow_html=True)
@@ -107,7 +111,7 @@ def clicked():
         print("Passwords doesnt match")
         st.session_state.c.markdown('<div class="message">Passwords doesnt match</div>', unsafe_allow_html=True)
         connection.close()
-    return False
+        return False
 
     
 
@@ -118,9 +122,10 @@ def setup():
     st.session_state.password_confirmed = st.text_input("Confirm password", type="password", placeholder="Confirm your password")
     col1, col2, col3 = st.columns([1, 1, 1])
     col2.html("<div style='text-align:center'><a href=/Login style='color:blue'>Already have an Account?</a></div>")
-    continue_button = st.button("Continue", on_click=clicked, use_container_width=True)    
-    if clicked and continue_button:
-        switch_page("bot")
+    continue_button = st.button("Continue", use_container_width=True)    
+    if continue_button:
+        if clicked():
+            switch_page("bot")
         
 
 
