@@ -207,8 +207,9 @@ def setup():
 
             st.write("### Your Saved Speeches ")
 
-            saved_speeches = database_service.select_table("saved_speeches", "name")
-
+            username = Login.st.session_state.username
+            
+            saved_speeches = cursor.execute("SELECT speech where username = ? FROM Users", (username).fetchall()
 
             for speech in saved_speeches:
 
@@ -231,7 +232,7 @@ def setup():
 def speech_saved(speech):
     with st.spinner("Saving Speech"):
         username = Login.st.session_state.username
-        cursor.execute("INSERT INTO Users WHERE username == {username} (speech) VALUES (?)", (speech))
+        cursor.execute("UPDATE Users SET speech = ? where username == ?", (speech, username))
         time.sleep(5)
     st.markdown('<div class="stSuccess">Speech saved</div>', unsafe_allow_html=True)
 
