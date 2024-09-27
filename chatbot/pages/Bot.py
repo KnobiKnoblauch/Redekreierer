@@ -230,7 +230,7 @@ def setup():
 
 def speech_saved(speech):
     with st.spinner("Saving Speech"):
-        username = Sign_Up.username
+        username = Login.st.session_state.username
         cursor.execute("INSERT INTO Users WHERE username == {username} (speech) VALUES (?)", (speech))
         time.sleep(5)
     st.markdown('<div class="stSuccess">Speech saved</div>', unsafe_allow_html=True)
