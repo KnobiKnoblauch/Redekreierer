@@ -1,6 +1,7 @@
 import streamlit as st
 import chatgpt_benutzen
 import time
+import Sign_UP
 
 from DatabaseConnector import DatabaseConnector
 from DatabaseService import DatabaseService
@@ -229,7 +230,8 @@ def setup():
 
 def speech_saved(speech):
     with st.spinner("Saving Speech"):
-        cursor.execute("INSERT INTO Users (speech) VALUES (?)", (speech))
+        username = Sign_Up.username
+        cursor.execute("INSERT INTO Users WHERE username == {username} (speech) VALUES (?)", (speech))
         time.sleep(5)
     st.markdown('<div class="stSuccess">Speech saved</div>', unsafe_allow_html=True)
 
