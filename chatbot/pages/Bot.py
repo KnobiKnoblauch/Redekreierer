@@ -1,7 +1,7 @@
 import streamlit as st
 import chatgpt_benutzen
 import time
-import Sign_UP
+import Login
 
 from DatabaseConnector import DatabaseConnector
 from DatabaseService import DatabaseService
