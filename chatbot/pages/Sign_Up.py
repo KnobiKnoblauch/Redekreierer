@@ -1,5 +1,6 @@
 import sqlite3
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 
 # Set up the Streamlit page
 st.set_page_config(page_title="Sign Up", layout="centered", initial_sidebar_state="collapsed")
@@ -11,7 +12,7 @@ st.session_state.c = st.empty()
 # Set up SQLite connection and user table
 connection = sqlite3.connect("LoginData.sqlite", check_same_thread=False)
 cursor = connection.cursor()
-cursor.execute("CREATE TABLE IF NOT EXISTS Users (username TEXT UNIQUE, password TEXT)")
+cursor.execute("CREATE TABLE IF NOT EXISTS Users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE, password TEXT)")
 connection.commit()
 
 # CSS styling for the app
@@ -100,11 +101,12 @@ def clicked():
         print("Account created")
         st.session_state.c.markdown('<div class="message">Account created</div>', unsafe_allow_html=True)
         connection.close()
-        switch_page()
+        return True
     elif password != password_confirmed:
         print("Passwords doesnt match")
         st.session_state.c.markdown('<div class="message">Passwords doesnt match</div>', unsafe_allow_html=True)
         connection.close()
+    return False
 
     
 
@@ -115,19 +117,15 @@ def setup():
     st.session_state.password_confirmed = st.text_input("Confirm password", type="password", placeholder="Confirm your password")
     col1, col2, col3 = st.columns([1, 1, 1])
     col2.html("<div style='text-align:center'><a href=/Login style='color:blue'>Already have an Account?</a></div>")
-    st.button("Continue", on_click=clicked, use_container_width=True)    
+    continue_button = st.button("Continue", on_click=clicked, use_container_width=True)    
+    if clicked and continue_button:
+        switch_page("bot")
+        
+
 
 def CreateAccount(username, password):
     cursor.execute("INSERT INTO Users (username, password) VALUES (?, ?)", (username, password))
     connection.commit()
-
-def switch_page():
-    st.components.v1.html(f"""
-        <script>
-            window.open("{"Login"}");
-        </script>
-    """)
-
 
 setup()
 st.markdown('<div class="footer">Lasse dir mit einfachen Schritten deine eigene, personalisierte und qualitativ hochwertige Rede kreieren!</div>', unsafe_allow_html=True)

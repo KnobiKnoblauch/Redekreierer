@@ -1,21 +1,27 @@
 import streamlit as st
 import chatgpt_benutzen
 import time
+import sqlite3
 
 from DatabaseConnector import DatabaseConnector
 from DatabaseService import DatabaseService
-import pages.Bot as bot
+import show_speech_page
+
+#st.set_page_config(page_title="Bot", layout="centered", initial_sidebar_state="collapsed")
+
+if "username" not in st.session_state:
+    st.session_state.username = ""
 
 db = DatabaseConnector()
 database_service = DatabaseService(db)
 
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
-else:
-    st.session_state.page = ""
+connection1 = sqlite3.connect("LoginData.sqlite", check_same_thread=False)
+cursor1 = connection1.cursor()
+
+connection2 = sqlite3.connect("chatbot.sqlite", check_same_thread=False)
+cursor2 = connection2.cursor()
 
 
-st.set_page_config(page_title="Login", layout="centered", initial_sidebar_state="expanded")
 
 st.markdown("""
     <style>
@@ -43,7 +49,7 @@ st.markdown("""
             color: #555;
             margin-top: 50px;
         }
-      .stButton > button, .stForm div > button {
+        .stButton > button, .stForm div > button {
             background-color: #4F8BF9;  /* Deine Hintergrundfarbe */
             color: white;  /* Textfarbe */
             border: none;
@@ -75,6 +81,10 @@ st.markdown("""
         }
         
          .stSuccess {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             background-color: #4F8BF9; /* Deine gewünschte Hintergrundfarbe */
             color: white; /* Textfarbe */
             border-radius: 5px; /* Abgerundete Ecken */
@@ -84,36 +94,65 @@ st.markdown("""
         }
         
         .custom-divider {
-        border: 0;
-        height: 2px; /* Höhe der Linie */
-        background-color: #0099FF; /* Ändere die Farbe hier */
-        margin: 20px 0; /* Abstand oben und unten */
+            border: 0;
+            height: 2px; /* Höhe der Linie */
+            background-color: #4F8BF9; /* Ändere die Farbe hier */
+            margin: 20px 0; /* Abstand oben und unten */
         
-    }
+        }
     
-       /* Hintergrundfarbe und Schriftfarbe des Expanders beim Hover */
+        /* Expander Container */
         .stExpander {
-            border-radius: 5px; /* Abgerundete Ecken */
-            overflow: hidden; /* Sicherstellen, dass der Inhalt nicht überläuft */
-        }
-
-        .stExpander:hover {
-            background-color: #3e74d8;  /* Hintergrundfarbe beim Hover */
-            color: white !important;  /* Schriftfarbe beim Hover */
-            border-radius: 5px; /* Beibehalten der abgerundeten Ecken */
-        }
-
-        /* Standardtextfarbe des Expanders */
-        .stExpander {
-            color: black; /* Standardtextfarbe */
-        }
-
-        /* Hoverfarbe für die Titel der Expanders */
-        .stExpander:hover h2, 
-        .stExpander:hover .stExpanderHeader {
-            color: white !important; /* Titel Schriftfarbe beim Hover */
+            border-radius: 5px;
+            overflow: hidden;
         }
         
+        .st-emotion-cache-p5msec.eqpbllx1:hover {
+            color: white !important;
+        }
+        
+        .st-emotion-cache-p5msec.eqpbllx1:hover {
+            color: white !important;
+        }
+        
+        svg:hover {
+            color: white !important;
+        }
+
+        /* Hintergrundfarbe und Textfarbe beim Hover */
+        .stExpander:hover {
+            background-color: #3e74d8;
+            color: white !important;
+        }
+
+        /* Standardfarbe des Expanders */
+        .stExpander h2, .stExpander .stExpanderHeader {
+            color: black !important; /* Standard Schriftfarbe */
+        }
+
+        /* Toggle-Button/ Header des Expanders, wenn man über ihn fährt */
+        .stExpanderHeader:hover {
+            background-color: #3e74d8; /* Gleiche Hintergrundfarbe beim Hover */
+            color: white !important; /* Schriftfarbe wird weiß beim Hover */
+        }
+
+        /* Speziell der Text und Pfeil-Symbol im geöffneten Zustand */
+        .stExpander:focus-within .stExpanderHeader {
+            background-color: #3e74d8; /* Hintergrund bleibt im geöffneten Zustand blau */
+            color: white !important; /* Schrift und Pfeil bleibt weiß */
+        }
+
+        /* Speziell für das Pfeil-Symbol und den Header-Text */
+        .stExpanderHeader:hover div {
+            color: white !important;
+        }
+
+        /* Auch im geöffneten Zustand die Farben beibehalten */
+        .stExpanderHeader:focus-within {
+            background-color: #3e74d8; 
+            color: white !important;
+        }
+   
     </style>
 """, unsafe_allow_html=True)
 
@@ -157,54 +196,83 @@ if 'speak_type' not in st.session_state:
 
 
 def setup():
+
+    database_service.create_table("saved_speeches", "(id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, speech, name)")   
+
     if not st.session_state.show_speech:
-        st.title("*Der Redekreierer* **von** :blue[Knobi] **und** :blue[TayozZ]")
-        st.subheader("Lasse dir mit einfachen Schritten deine _eigene_, _personalisierte_ und _qualitativ hochwertige_ :blue[Rede] kreieren!", divider="blue")
+        st.markdown('<h1 class="title">Der Redekreierer</h1>', unsafe_allow_html=True)
+        st.container(height=15, border=False)
+        st.markdown('<div class="subtitle">Lasse dir mit einfachen Schritten deine eigene, personalisierte und qualitativ hochwertige Rede kreieren!</div>', unsafe_allow_html=True)
+        st.write("---")
+        st.container(height=15, border=False)
+        st.session_state.speak_type["topic"] = st.text_input("What is your speech about?")
+        st.session_state.speak_type["goal"] = st.text_input("What are you trying to achieve with your speech?")
+        st.session_state.speak_type["addresant"] = st.text_input("Who listens to your speech?")
+        st.session_state.speak_type["speaker"] = st.text_input("Who is performing your speech?")
+        st.session_state.speak_type["points"] = st.text_input("How many points should your speech score on a scale of 1-100?")
 
-        with st.form("speech_form"):
-            st.session_state.speak_type["topic"] = st.text_input("What is your speech about?")
-            st.session_state.speak_type["goal"] = st.text_input("What are you trying to achieve with your speech?")
-            st.session_state.speak_type["addresant"] = st.text_input("Who listens to your speech?")
-            st.session_state.speak_type["speaker"] = st.text_input("Who is performing your speech?")
-            st.session_state.speak_type["points"] = st.text_input("How many points should your speech score on a scale of 1-100?")
+        submit_button = st.button("Submit", use_container_width=True)
 
-            submit_button = st.form_submit_button("Submit")
+        with st.sidebar:
+            st.write("### Your Speech Details")
+            st.write(f"- **Topic**: *{st.session_state.speak_type['topic']}*")
+            st.write(f"- **Goal**: *{st.session_state.speak_type['goal']}*")
+            st.write(f"- **Audience**: *{st.session_state.speak_type['addresant']}*")
+            st.write(f"- **Speaker**: *{st.session_state.speak_type['speaker']}*")
 
-            with st.sidebar:
-                st.write("### Your Speech Details")
-                st.write(f"- **Topic**: *{st.session_state.speak_type['topic']}*")
-                st.write(f"- **Goal**: *{st.session_state.speak_type['goal']}*")
-                st.write(f"- **Audience**: *{st.session_state.speak_type['addresant']}*")
-                st.write(f"- **Speaker**: *{st.session_state.speak_type['speaker']}*")
+            st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 
-                st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+            st.write("### Your Saved Speeches ")
 
-                st.write("### Your Saved Speeches ")
+            
 
-                database_service.create_table("saved_speeches", "(id INTEGER PRIMARY KEY AUTOINCREMENT, speech, name)")
-                saved_speeches = database_service.select_table("saved_speeches", "name")
+            username = st.session_state.username
+            user_id = cursor1.execute("SELECT user_id FROM Users WHERE username = ?", (username,)).fetchone()[0]
+            cursor1.close()
+            saved_speeches = cursor2.execute("SELECT speech FROM saved_speeches WHERE user_id = ?", (user_id,)).fetchall()
+            cursor2.close()
 
-
-                for speech in saved_speeches:
-                    with st.expander(speech):
-                        id = database_service.select_table_id("saved_speeches", "id", speech)
-
-                        st.button("Delete Speech", on_click=delete_speech, key=f"delete_{id}", args=id)
-                        st.button("Show Speech", on_click=show_speech, key=f"show_{id}", args=id)
+            for speech in saved_speeches:
+                with st.expander(speech):
+                    col1, col2 = st.columns(2)
+                    id = database_service.select_table_id("Speeches", "speech_id", speech)
+                    with col1:
+                        st.button("Delete", on_click=delete_speech, key=f"delete_{id}", args=(id,))
+                    with col2:
+                        st.button("Show", on_click=show_speech, key=f"show_{id}", args=(id,))
 
         if submit_button:
-            display_speech_info()
+            if (st.session_state.speak_type["topic"] == "" or
+                st.session_state.speak_type["goal"] == "" or
+                st.session_state.speak_type["addresant"] == "" or
+                st.session_state.speak_type["speaker"] == "" or
+                st.session_state.speak_type["points"] == ""):
+        
+                st.markdown('<div class="message">Some fields are empty</div>', unsafe_allow_html=True)
+            else:
+                try:
+                    points = int(st.session_state.speak_type["points"])
+                    if not (0 <= points <= 100):
+                        st.markdown('<div class="message">Check your Input for the points</div>', unsafe_allow_html=True)
+                    else:
+                        display_speech_info()  
+                except ValueError:
+                    st.markdown('<div class="message">Points must be a valid number</div>', unsafe_allow_html=True)
 
 
 def speech_saved(speech):
     with st.spinner("Saving Speech"):
-        database_service.insert_speech(speech, chatgpt_benutzen.speech_name(speech))
-        time.sleep(5)
-    st.markdown('<div class="stSuccess">Speech saved</div>', unsafe_allow_html=True)
+        username = st.session_state.username
+        user_id = cursor1.execute("SELECT user_id FROM Users WHERE username = ?", (username,))
+        print(user_id)
+        name = chatgpt_benutzen.speech_name(speech)
+        print(name + speech)
+        database_service.insert_speech(speech, name, user_id)
+    st.markdown('<div class="message">Speech saved</div>', unsafe_allow_html=True)
 
 
 def display_speech_info():
-    st.markdown('<div class="stSuccess">Your Speech has been submitted</div>', unsafe_allow_html=True)
+    st.markdown('<div class="message">Your Speech has been submitted</div>', unsafe_allow_html=True)
 
     min_score = st.session_state.speak_type['points']
 
@@ -212,8 +280,7 @@ def display_speech_info():
         speak_type = input_speak_type(database_service)
         st.session_state.output = chatgpt_benutzen.gptbenutzen_infos(speak_type, min_score, database_service)
     output = st.session_state.output
-    st.markdown('<div class="stSuccess">speech generated</div>', unsafe_allow_html=True)
-    time.sleep(2)
+    st.markdown('<div class="message">speech generated</div>', unsafe_allow_html=True)
     speech_output(output)
 
     if 'speech_saved' not in st.session_state:
@@ -236,15 +303,15 @@ def delete_speech(id):
     database_service.delete_speech(id)
 
     with st.spinner("deleting Speech"):
-        time.sleep(2)
+        print("spinna")
 
-    st.markdown('<div class="stSuccess">Speech deleted</div>', unsafe_allow_html=True)
+    st.markdown('<div class="message">Speech deleted</div>', unsafe_allow_html=True)
 
 
 def show_speech(id):
     st.session_state.show_speech = True
     st.session_state.speech_id = id
-    bot.show_speech(id)
+    show_speech_page.setup_show_speech(id)
 
 
 def return_home():

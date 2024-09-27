@@ -12,7 +12,11 @@ def setup_show_speech(id):
 
     speech = database_service.select_table_name("saved_speeches", "name", id)
 
-    st.title("Der Redekreierer")
+    st.markdown("""
+                <div style="text-align: center;">
+                    <h1 style="line-height: 1.2;">Der Redekreierer</h1>
+                </div>
+            """, unsafe_allow_html=True)
     st.subheader(speech)
 
     show_speech(id)
@@ -28,7 +32,7 @@ def show_speech(id):
     speech = database_service.select_table_spalte("saved_speeches", "speech", id)
 
     with st.spinner("loading Speech"):
-        time.sleep(2)
+        print("spinna")
 
     st.markdown('<div class="stSuccess">Speech loaded</div>', unsafe_allow_html=True)
 

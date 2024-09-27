@@ -7,9 +7,11 @@ class DatabaseService:
         self.db = database
 
     def create_table(self, table_name, columns):
+        current = self.db.getCursor()
         print(f"Create table {table_name}")
-        self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} {columns}")
-        print(f"Table {table_name} created successfully")
+        current.execute(f"CREATE TABLE IF NOT EXISTS {table_name} {columns}")
+        print(f"Table {table_name} exists")
+        current.close()
 
     def insert_prompt(self, speak_type):
         print("Erstelle Prompt-Types ...")
@@ -27,6 +29,7 @@ class DatabaseService:
         )
         self.db.saveChanges()
         print("Prompt-Types erstellt")
+        self.cursor.close()
 
     def insert_score_points(self, score_type):
         print("Erstelle Punkteverteilung ...")
@@ -38,6 +41,7 @@ class DatabaseService:
         )
         self.db.saveChanges()
         print("Punkteverteilung erstellt")
+        self.cursor.close()
 
     def insert_improvement_points(self, improvement_score_type):
         print("Erstelle verbesserte Punkteverteilung ...")
@@ -50,15 +54,18 @@ class DatabaseService:
         )
         self.db.saveChanges()
         print("verbesserte Punkteverteilung erstellt")
+        self.cursor.close()
 
-    def insert_speech(self, speech, name):
+    def insert_speech(self, speech, name, user_id):
         print("Speichere speech")
-        self.cursor.execute("INSERT INTO saved_speeches (speech, name) VALUES (?, ?)",
+        self.cursor.execute("INSERT INTO saved_speeches (speech, name, user_id) VALUES (?, ?, ?)",
                             [
-                                speech, name
+                                speech, name, user_id
                             ])
         self.db.saveChanges()
         print("speech gespeichert")
+
+        self.cursor.close()
 
     def select_table(self, table_name, column_name):
 
@@ -66,11 +73,15 @@ class DatabaseService:
 
         rows = self.cursor.fetchall()
 
+        self.cursor.close()
+
         return [row[0] for row in rows]
 
     def select_table_spalte(self, table_name, column_name, id):
         self.cursor.execute(f"SELECT {column_name} FROM {table_name} WHERE id=?", (id,))
         result = self.cursor.fetchone()  # Holt nur eine Zeile
+
+        self.cursor.close()
 
         if result:
             return result[0]  # Gibt den tatsächlichen Wert ohne Tupel oder Liste zurück
@@ -81,11 +92,15 @@ class DatabaseService:
         self.cursor.execute(f"SELECT {column_name} FROM {table_name} WHERE name=?", [name])
         result = self.cursor.fetchall()
 
+        self.cursor.close()
+
         return result[0]
 
     def select_table_name(self, table_name, column_name, id):
         self.cursor.execute(f"SELECT {column_name} FROM {table_name} WHERE id=?", (id,))
         result = self.cursor.fetchone()  # Holt nur eine Zeile
+
+        self.cursor.close()
 
         if result:
             return result[0]
@@ -96,6 +111,8 @@ class DatabaseService:
         query = f"SELECT * FROM {table_name}"
         self.cursor.execute(query)
         rows = self.cursor.fetchall()
+
+        self.cursor.close()
 
         if rows:
             last_row = rows[-1]
@@ -111,6 +128,8 @@ class DatabaseService:
 
         rows = self.cursor.fetchall()
 
+        self.cursor.close()
+
         if rows:
             last_row = rows[-1]
             return {
@@ -123,7 +142,25 @@ class DatabaseService:
         else:
             print("Die Tabelle ist leer.")
             return None
+        
+    def select_table_name_where_id(self, table_name, id):
+        if id is None:
+            print("Error: ID is None.")
+            return None  # Handle case where ID is not valid
+
+        print(f"Fetching name from {table_name} where user_id={id}")  # Debugging output
+        self.cursor.execute(f"SELECT name FROM {table_name} WHERE user_id=?", (id,))  # Correct use of tuple
+        result = self.cursor.fetchone()
+
+        self.cursor.close()
+
+        if result:
+            return result[0]
+        else:
+            print("No result found for User_id:", id)
+            return None
 
     def delete_speech(self, id):
         self.cursor.execute("DELETE FROM saved_speeches WHERE id = ?", (id,))
         self.db.saveChanges()
+        self.cursor.close()

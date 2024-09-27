@@ -79,22 +79,29 @@ st.markdown("""
 
 st.markdown('<h1 class="title">Der Redekreierer</h1>', unsafe_allow_html=True)
 st.container(height=50, border=False)
+st.write("---")
 st.markdown('<div class="super-subtitle">Lasse dir mit einfachen Schritten deine eigene, personalisierte und qualitativ hochwertige Rede kreieren!</div>', unsafe_allow_html=True)
+st.write("---")
 st.container(height=50, border=False)
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col3:
-    login_button = st.button("Login")
+    login_button = st.button("Login", use_container_width=True)
     if login_button:
         switch_page("login")
 
 with col4:
-    sign_up_button = st.button("Sign Up")
+    sign_up_button = st.button("Sign Up", use_container_width=True)
     if sign_up_button:
         switch_page("sign up")
 
-continue_button = st.button("Continue")
-if continue_button:
-    switch_page("bot")
-#st.switch_page("pages/Login.py")
+st.container(height=10, border=False)
 
+col1, col2, col3 = st.columns(3)
+
+with col2:
+    continue_button = st.button("Skip", use_container_width=True)
+    if continue_button:
+        switch_page("bot")
+
+st.markdown('<div class="footer">Erstellt von Knobi und TayoZz 😎</div>', unsafe_allow_html=True)
