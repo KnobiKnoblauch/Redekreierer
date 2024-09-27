@@ -11,7 +11,7 @@ st.session_state.c = st.empty()
 # Set up SQLite connection and user table
 connection = sqlite3.connect("LoginData.sqlite", check_same_thread=False)
 cursor = connection.cursor()
-cursor.execute("CREATE TABLE IF NOT EXISTS Users (username TEXT UNIQUE, password TEXT)")
+cursor.execute("CREATE TABLE IF NOT EXISTS Users (username TEXT UNIQUE, password TEXT, speech_id INTEGER PRIMARY KEY AUTOINCREMENT)")
 connection.commit()
 
 # CSS styling for the app
